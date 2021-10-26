@@ -2,47 +2,56 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx_app/controller.dart';
 
-class Home extends StatelessWidget {
-  const Home({Key? key}) : super(key: key);
+class Home extends StatefulWidget {
+  const Home({Key? key, required this.title}) : super(key: key);
+
+  final String title;
+
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  Controller controller = Controller();
 
   @override
   Widget build(BuildContext context) {
-    final controller = Controller();
-
     return Scaffold(
       appBar: AppBar(
-        title: const Center(
-          child: Text('Counter with Mobx'),
+        title: Center(
+          child: Text(widget.title),
         ),
       ),
       body: Center(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            FloatingActionButton(
-              onPressed: () {
-                controller.decrement();
-              },
-              child: const Icon(Icons.remove),
-            ),
-            Observer(
-              builder: (_) {
-                return Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Text(
-                    '${controller.counter}',
-                    style: Theme.of(context).textTheme.headline3,
-                  ),
-                );
-              },
-            ),
-            FloatingActionButton(
-              onPressed: () {
-                controller.increment();
-              },
-              child: const Icon(Icons.add),
-            )
-          ],
+        child: Padding(
+          padding: const EdgeInsets.all(30),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            // ignore: prefer_const_literals_to_create_immutables
+            children: [
+              TextField(
+                decoration: const InputDecoration(
+                  labelText: 'Name',
+                ),
+                onChanged: controller.changeName,
+              ),
+              const SizedBox(height: 20),
+              TextField(
+                decoration: const InputDecoration(
+                  labelText: 'Name',
+                ),
+                onChanged: controller.changeSurname,
+              ),
+              const SizedBox(height: 30),
+              Observer(
+                builder: (_) {
+                  return Text(
+                    controller.completeName,
+                  );
+                },
+              )
+            ],
+          ),
         ),
       ),
     );

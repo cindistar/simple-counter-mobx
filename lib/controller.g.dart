@@ -9,18 +9,41 @@ part of 'controller.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$Controller on _ControllerBase, Store {
-  final _$counterAtom = Atom(name: '_ControllerBase.counter');
+  Computed<String>? _$completeNameComputed;
 
   @override
-  int get counter {
-    _$counterAtom.reportRead();
-    return super.counter;
+  String get completeName =>
+      (_$completeNameComputed ??= Computed<String>(() => super.completeName,
+              name: '_ControllerBase.completeName'))
+          .value;
+
+  final _$nameAtom = Atom(name: '_ControllerBase.name');
+
+  @override
+  String get name {
+    _$nameAtom.reportRead();
+    return super.name;
   }
 
   @override
-  set counter(int value) {
-    _$counterAtom.reportWrite(value, super.counter, () {
-      super.counter = value;
+  set name(String value) {
+    _$nameAtom.reportWrite(value, super.name, () {
+      super.name = value;
+    });
+  }
+
+  final _$surnameAtom = Atom(name: '_ControllerBase.surname');
+
+  @override
+  String get surname {
+    _$surnameAtom.reportRead();
+    return super.surname;
+  }
+
+  @override
+  set surname(String value) {
+    _$surnameAtom.reportWrite(value, super.surname, () {
+      super.surname = value;
     });
   }
 
@@ -28,22 +51,22 @@ mixin _$Controller on _ControllerBase, Store {
       ActionController(name: '_ControllerBase');
 
   @override
-  dynamic increment() {
+  dynamic changeName(String newName) {
     final _$actionInfo = _$_ControllerBaseActionController.startAction(
-        name: '_ControllerBase.increment');
+        name: '_ControllerBase.changeName');
     try {
-      return super.increment();
+      return super.changeName(newName);
     } finally {
       _$_ControllerBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  dynamic decrement() {
+  dynamic changeSurname(String newName) {
     final _$actionInfo = _$_ControllerBaseActionController.startAction(
-        name: '_ControllerBase.decrement');
+        name: '_ControllerBase.changeSurname');
     try {
-      return super.decrement();
+      return super.changeSurname(newName);
     } finally {
       _$_ControllerBaseActionController.endAction(_$actionInfo);
     }
@@ -52,7 +75,9 @@ mixin _$Controller on _ControllerBase, Store {
   @override
   String toString() {
     return '''
-counter: ${counter}
+name: ${name},
+surname: ${surname},
+completeName: ${completeName}
     ''';
   }
 }
